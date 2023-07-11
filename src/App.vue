@@ -59,26 +59,27 @@ watch(selected_option, async()=>{
 
 
 <template>
-<h1>SpaceX API</h1>
-<section id="Prochain_Lancement">
-  <h2>Nom de la mission: {{ info_prochain_lancement && info_prochain_lancement.prochain_lancement.name }}</h2>
-  <div id="Time">
-    <p>Date du prochain lancement : {{ info_prochain_lancement && info_prochain_lancement.date_launch }}</p>
-    <p id="decompte">{{ decompte }}</p>
-  </div>
-</section>
-<section id="Selection_Lancement">
-  <label>Selectionnez une option </label>
-  <select v-model="selected_option" id="launch_options">
-    <option value="1">Tous les lancements </option>
-    <option value="2">Lancements réussis</option>
-    <option value="3">Lancement échoués</option>
-  </select>
+<div class="main">
+  <h1>SpaceX API</h1>
+  <section id="Prochain_Lancement">
+    <h2>Nom de la mission: {{ info_prochain_lancement && info_prochain_lancement.prochain_lancement.name }}</h2>
+    <div id="Time">
+      <p>Date du prochain lancement : {{ info_prochain_lancement && info_prochain_lancement.date_launch }}</p>
+      <p id="decompte">{{ decompte }}</p>
+    </div>
+  </section>
+  <section id="Selection_Lancement">
+    <label>Selectionnez une option </label>
+    <select v-model="selected_option" id="launch_options">
+      <option value="1">Tous les lancements </option>
+      <option value="2">Lancements réussis</option>
+      <option value="3">Lancement échoués</option>
+    </select>
   <div class="container">
     <TypeLancement v-for="obj in selected_data" :object="obj"/>
   </div>
-  
-</section>
+  </section>
+</div>
 </template>
 
 <style>
