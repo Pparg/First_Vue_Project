@@ -1,20 +1,20 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import TypeLancement from './components/TypeLancement.vue'
 //State
 let info_prochain_lancement = ref(null)
 let decompte = ref(0)
 let selected_option = ref(null)
-let selected_data = ref(null)
-// Fetching pour prochain lancement
-fetch("https://api.spacexdata.com/v5/launches/latest")
-  .then( response => response.json())
-  .then( data => {
-    // recuperation des données de SpaceX Api et stockage dans ref info_prochain_lancement
+let selected_data = ref([])
+// Fonction pour recuperer les données de l'api pour prochain lancement
+async function Data_Next_Launch() {
+  try{
+    let retriving_data = await fetch("https://api.spacexdata.com/v5/launches/latest")
+    let data = await retriving_data.json()
+    // Formatage de la date
     let formatted_date = data.date_utc.slice(0,10)
-    info_prochain_lancement.value = {prochain_lancement : data}
-    // Changement du format de la date recuperer puis stocker dans une nouvelle proprietes appelé date_launch
-    info_prochain_lancement.value = {...info_prochain_lancement.value, date_launch : formatted_date}
+    // recuperation des données de SpaceX Api et stockage dans ref info_prochain_lancement
+    info_prochain_lancement.value = {prochain_lancement: data, date : formatted_date}
     // Creation du decompte
     let time_to_launch = data.date_unix - Date.now()
     // Date de lancement valide
@@ -30,8 +30,12 @@ fetch("https://api.spacexdata.com/v5/launches/latest")
     else{
       decompte.value = "Pas de lancement annoncé"
     }
-  })
-  .catch(err => console.log(err))
+  }// Si erreur
+  catch(error){
+    console.log(error)
+  }
+}
+onMounted(Data_Next_Launch)
 //Fetching pour selection de lancement
 watch(selected_option, async()=>{
   try{
@@ -55,6 +59,7 @@ watch(selected_option, async()=>{
   }
   
 })
+
 </script>
 
 
